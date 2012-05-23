@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <ImageButton
+        android:id="@+id/image_c"
+        android:layout_width="61dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+         android:layout_marginTop="10dp"
+        android:src="@drawable/button_c" />
+
+    <ImageButton
+        android:id="@+id/image_cplus"
+        android:layout_width="61dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/button_cplus"
+       
+             android:layout_marginLeft="50dp"
+        android:layout_marginTop="20dp"
+        />
+
+    <ImageButton
+        android:id="@+id/ImageButton05"
+        android:layout_width="61dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/button_python"
+         android:layout_marginLeft="100dp"
+          android:layout_marginTop="30dp"/>
+
+    <ImageButton
+        android:id="@+id/ImageButton03"
+        android:layout_width="61dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/button_java"
+      android:layout_marginLeft="50dp"
+       android:layout_marginTop="40dp"/>
+   
+    <ImageButton
+        android:id="@+id/ImageButton04"
+        android:layout_width="61dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/button_scilab" 
+         android:layout_marginLeft="0dp"
+          android:layout_marginTop="50dp"/>
+ 
+</LinearLayout>

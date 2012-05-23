@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Programmer</string>
+    <string name="lang0_prompt">Classic</string>
+    <string name="lang1_prompt">Practical</string>
+    <string name="lang2_prompt">Esoteric</string>
+    <string name="lang3_prompt">Web</string>
+    
+    <string-array name="lang_array0">
+        <item>Qbasic</item>
+        <item>Forth</item>
+        
+    </string-array>
+    <string-array name="lang_array1">
+        <item>Ruby</item>
+        <item>Python</item>
+        <item>Lua</item>
+        <item>Scheme</item>
+                
+    </string-array>
+       
+    
+    <string-array name="lang_array2">
+        <item>Emoticon</item>
+        <item>Brainfuck</item>
+        <item>LOLCODE</item>
+        <item>Bloop</item>
+        
+    </string-array>
+    <string-array name="lang_array3">
+        <item>JavaScript</item>
+        <item>Kaffeine</item>
+        <item>Roy</item>
+                
+    </string-array>
+    
+
+</resources>

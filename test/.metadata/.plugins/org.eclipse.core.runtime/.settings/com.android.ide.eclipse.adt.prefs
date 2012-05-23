@@ -1,0 +1,4 @@
+com.android.ide.eclipse.adt.fixLegacyEditors=1
+com.android.ide.eclipse.adt.palette=SMALL_PREVIEW
+com.android.ide.eclipse.adt.sdk=/home/jaghvi/Documents/summer/android-sdk-linux
+eclipse.preferences.version=1

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Select a language type</string>
+    <string name="lang_prompt">Choose one </string>
+    <string-array name="lang_array">
+        <item>Classic</item>
+        <item>Practical</item>
+        <item>Esoteric</item>
+        <item>web</item>
+        
+    </string-array>
+    
+
+</resources>
