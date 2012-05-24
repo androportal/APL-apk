@@ -1,0 +1,11 @@
+The folder apk_files all he apk's developed so far on eclipse.
+For making an apk you need to install:
+a.Eclipse (32 bit if OS is 32 and 64 if OS is 64 bit)
+b.ADT plugin for eclipse
+c.android sdk
+Do not forget to configure proxy settings in both eclipse and sdk for proper installation of packages.
+for more help refer:http://developer.android.com/sdk/index.html
+
+once installed to make a new project
+Eclipse-->New-->Android Project--->Get set go.
+
