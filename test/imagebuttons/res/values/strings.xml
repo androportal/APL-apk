@@ -3,5 +3,10 @@
 
     <string name="hello">Hello World, ImagebuttonsActivity!</string>
     <string name="app_name">Imagebuttons</string>
+    <string name="c_lang">c language</string>
+    <string name="app2_name">welcome to c </string>
+    <string name="app5_name">Welcome to C++</string>
+    <string name="app3_name">Welcome to Python</string>
+    <string name="app4_name">welcome to Scilab</string>
 
 </resources>

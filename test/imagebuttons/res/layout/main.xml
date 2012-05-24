@@ -2,48 +2,49 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:background="@drawable/background" >
 
     <ImageButton
         android:id="@+id/image_c"
         android:layout_width="61dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="0dp"
-         android:layout_marginTop="10dp"
-        android:src="@drawable/button_c" />
+         android:layout_marginTop="10dp" android:background="@null"
+        android:src="@drawable/button_c" 
+        android:onClick="onclickhandler"/>
 
     <ImageButton
         android:id="@+id/image_cplus"
         android:layout_width="61dp"
         android:layout_height="wrap_content"
         android:src="@drawable/button_cplus"
+        android:onClick="onclickhandler" android:background="@null"
        
-             android:layout_marginLeft="50dp"
+             android:layout_marginLeft="0dp"
         android:layout_marginTop="20dp"
         />
 
     <ImageButton
-        android:id="@+id/ImageButton05"
+        android:id="@+id/image_python"
         android:layout_width="61dp"
         android:layout_height="wrap_content"
         android:src="@drawable/button_python"
-         android:layout_marginLeft="100dp"
-          android:layout_marginTop="30dp"/>
+         android:layout_marginLeft="0dp"
+          android:layout_marginTop="30dp"
+          android:onClick="onclickhandler"
+          android:background="@null"/>
 
-    <ImageButton
-        android:id="@+id/ImageButton03"
-        android:layout_width="61dp"
-        android:layout_height="wrap_content"
-        android:src="@drawable/button_java"
-      android:layout_marginLeft="50dp"
-       android:layout_marginTop="40dp"/>
+   
    
     <ImageButton
-        android:id="@+id/ImageButton04"
+        android:id="@+id/image_scilab"
         android:layout_width="61dp"
         android:layout_height="wrap_content"
         android:src="@drawable/button_scilab" 
          android:layout_marginLeft="0dp"
-          android:layout_marginTop="50dp"/>
- 
+          android:layout_marginTop="40dp"
+          android:onClick="onclickhandler"
+           android:background="@null"/>
+  "
 </LinearLayout>

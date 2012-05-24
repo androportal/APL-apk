@@ -11,30 +11,38 @@ public final class R {
     public static final class attr {
     }
     public static final class drawable {
-        public static final int button_c=0x7f020000;
-        public static final int button_cplus=0x7f020001;
-        public static final int button_focussed=0x7f020002;
-        public static final int button_java=0x7f020003;
-        public static final int button_normal=0x7f020004;
-        public static final int button_pressed=0x7f020005;
-        public static final int button_python=0x7f020006;
-        public static final int button_scilab=0x7f020007;
-        public static final int golden_gate=0x7f020008;
-        public static final int i=0x7f020009;
-        public static final int ic_launcher=0x7f02000a;
+        public static final int background=0x7f020000;
+        public static final int button_c=0x7f020001;
+        public static final int button_cplus=0x7f020002;
+        public static final int button_focussed=0x7f020003;
+        public static final int button_java=0x7f020004;
+        public static final int button_normal=0x7f020005;
+        public static final int button_pressed=0x7f020006;
+        public static final int button_python=0x7f020007;
+        public static final int button_scilab=0x7f020008;
+        public static final int golden_gate=0x7f020009;
+        public static final int i=0x7f02000a;
+        public static final int ic_launcher=0x7f02000b;
     }
     public static final class id {
-        public static final int ImageButton03=0x7f050003;
-        public static final int ImageButton04=0x7f050004;
-        public static final int ImageButton05=0x7f050002;
-        public static final int image_c=0x7f050000;
-        public static final int image_cplus=0x7f050001;
+        public static final int button1=0x7f050001;
+        public static final int image_c=0x7f050002;
+        public static final int image_cplus=0x7f050003;
+        public static final int image_python=0x7f050004;
+        public static final int image_scilab=0x7f050005;
+        public static final int web_engine=0x7f050000;
     }
     public static final class layout {
-        public static final int main=0x7f030000;
+        public static final int c=0x7f030000;
+        public static final int main=0x7f030001;
     }
     public static final class string {
+        public static final int app2_name=0x7f040003;
+        public static final int app3_name=0x7f040005;
+        public static final int app4_name=0x7f040006;
+        public static final int app5_name=0x7f040004;
         public static final int app_name=0x7f040001;
+        public static final int c_lang=0x7f040002;
         public static final int hello=0x7f040000;
     }
 }
