@@ -38,7 +38,9 @@ public class cp extends ActivityGroup {
 	private static final String FTYPE = ".cpp";
 	private static final int DIALOG_LOAD_FILE = 1000;
 	private String oe_path;
-
+	//added for example and open	
+	private String write_path;
+	private String ex_flag="open";
 	/** Called when the activity is first created. */
 	@Override
 	// menu creation
@@ -178,7 +180,10 @@ public class cp extends ActivityGroup {
 		webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
 		webSettings.setAppCacheEnabled(false);
 		engine.setWebChromeClient(new MyWebChromeClient());
-		engine.loadUrl("javascript:submit_file()");
+		if(ex_flag=="open")
+	        	 engine.loadUrl("javascript:submit_file()");
+	        else if(ex_flag=="example")	        
+	        	 engine.loadUrl("javascript:example_file()");
 	}
 
 	// android file explorer for listing the files to open
@@ -231,9 +236,7 @@ public class cp extends ActivityGroup {
 					OutputStream outStream = null;
 
 					try {
-						File bfile = new File(
-								"/data/local/linux/var/www/html/cpp/code/.open_file.cpp");
-
+						File bfile = new File(write_path);
 						inStream = new FileInputStream(oe_path + mChosenFile);
 						outStream = new FileOutputStream(bfile);
 
@@ -267,6 +270,8 @@ public class cp extends ActivityGroup {
 		// Handle item selection
 		switch (item.getItemId()) {
 		case R.id.open:
+			ex_flag="open";
+	            	write_path="/data/local/linux/var/www/html/cpp/code/.open_file.cpp";
 			oe_path = Environment.getExternalStorageDirectory()
 					+ "/APL/cpp/code/";
 			mPath = new File(oe_path);
@@ -276,13 +281,15 @@ public class cp extends ActivityGroup {
 			test();
 			return true;
 		case R.id.example:
+			ex_flag="example";
+	            	write_path="/data/example/cpp/.open_file.cpp";
 			oe_path = "/data/local/linux/var/www/html/cpp/example/";
 			mPath = new File(oe_path);
 			loadFileList();
 			return true;
 		case R.id.help:
 
-			Intent myIntent = new Intent(cp.this, help.class);
+			Intent myIntent = new Intent(cp.this, cphelp.class);
 			startActivityForResult(myIntent, 0);
 
 			return true;

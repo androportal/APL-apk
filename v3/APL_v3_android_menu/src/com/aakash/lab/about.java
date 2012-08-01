@@ -28,7 +28,7 @@ public class about extends Activity{
 		        }
 	        }); 
 	        
-	   // webview for help     
+	   // webview for chelp     
 	  WebView engine = (WebView) findViewById(R.id.webView1); 
       
       WebSettings webSettings = engine.getSettings();
@@ -62,7 +62,7 @@ public class about extends Activity{
       	});
 	       
      // address of html file in ch root
-      engine.loadUrl("http://127.0.0.1/html/help.html"); 
+      engine.loadUrl("file:///data/local/linux/var/www/html/preview/preview.html"); 
       // enabling all pop ups in web view
       engine.setWebChromeClient(new WebChromeClient()
 

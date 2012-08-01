@@ -9,13 +9,13 @@
                 android:id="@+id/webView1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="0.48" />
+                android:layout_weight="0.46" />
 
             <WebView
                 android:id="@+id/webView2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="0.52" />
+                android:layout_weight="0.54" />
             
 
        

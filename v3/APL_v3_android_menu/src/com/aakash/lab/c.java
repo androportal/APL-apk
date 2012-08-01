@@ -14,6 +14,7 @@ import android.app.Dialog;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -36,6 +37,9 @@ public class c extends ActivityGroup {
 	private static final String FTYPE = ".c";
 	private static final int DIALOG_LOAD_FILE = 1000;
 	private String oe_path;
+	// added for example and open
+	private String write_path;
+	private String ex_flag = "open";
 
 	/** Called when the activity is first created. */
 	@Override
@@ -108,9 +112,11 @@ public class c extends ActivityGroup {
 		// java script enabled
 		webSettings1.setJavaScriptEnabled(true);
 		// scroll bars disabled
+
 		engine1.setVerticalScrollBarEnabled(false);
 		engine1.setHorizontalScrollBarEnabled(false);
 		// web page focused
+
 		engine1.setOnTouchListener(new View.OnTouchListener() {
 
 			public boolean onTouch(View v, MotionEvent event) {
@@ -132,7 +138,10 @@ public class c extends ActivityGroup {
 		});
 
 		// address of page for shell in a box
+
 		engine1.loadUrl("http://127.0.0.1:4200");
+		engine1 = new WebView(this);
+		engine1.reload();
 
 		engine1.setWebChromeClient(new WebChromeClient()
 
@@ -177,7 +186,10 @@ public class c extends ActivityGroup {
 		webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
 		webSettings.setAppCacheEnabled(false);
 		engine.setWebChromeClient(new MyWebChromeClient());
-		engine.loadUrl("javascript:submit_file()");
+		if (ex_flag == "open")
+			engine.loadUrl("javascript:submit_file()");
+		else if (ex_flag == "example")
+			engine.loadUrl("javascript:example_file()");
 	}
 
 	// android file explorer
@@ -230,9 +242,7 @@ public class c extends ActivityGroup {
 					OutputStream outStream = null;
 
 					try {
-						File bfile = new File(
-								"/data/local/linux/var/www/html/c/code/.open_file.c");
-
+						File bfile = new File(write_path);
 						inStream = new FileInputStream(oe_path + mChosenFile);
 						outStream = new FileOutputStream(bfile);
 
@@ -266,6 +276,8 @@ public class c extends ActivityGroup {
 		// Handle item selection
 		switch (item.getItemId()) {
 		case R.id.open:
+			ex_flag = "open";
+			write_path = "/data/local/linux/var/www/html/c/code/.open_file.c";
 			oe_path = Environment.getExternalStorageDirectory()
 					+ "/APL/c/code/";
 			mPath = new File(oe_path);
@@ -275,12 +287,14 @@ public class c extends ActivityGroup {
 			test();
 			return true;
 		case R.id.example:
+			ex_flag = "example";
+			write_path = "/data/example/c/.open_file.c";
 			oe_path = "/data/local/linux/var/www/html/c/example/";
 			mPath = new File(oe_path);
 			loadFileList();
 			return true;
 		case R.id.help:
-			Intent myIntent = new Intent(c.this, help.class);
+			Intent myIntent = new Intent(c.this, chelp.class);
 			startActivityForResult(myIntent, 0);
 
 			return true;

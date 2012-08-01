@@ -44,13 +44,15 @@ public class sci extends ActivityGroup implements SimpleGestureListener {
 	private static final String FTYPE = ".cde";
 	private static final int DIALOG_LOAD_FILE = 1000;
 	private String oe_path;
-
+	//added for example and open	
+	private String write_path;
+	private String ex_flag="open";
 	/** Called when the activity is first created. */
 
 	@Override
 	// menu creation
 	public boolean onPrepareOptionsMenu(Menu menu) {
-
+		menu.clear();
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.menu, menu);
 
@@ -266,7 +268,10 @@ public class sci extends ActivityGroup implements SimpleGestureListener {
 		webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
 		webSettings.setAppCacheEnabled(false);
 		engine.setWebChromeClient(new MyWebChromeClientsci());
-		engine.loadUrl("javascript:submit_file()");
+		if(ex_flag=="open")
+	        	 engine.loadUrl("javascript:submit_file()");
+	        else if(ex_flag=="example")	        
+	        	 engine.loadUrl("javascript:example_file()");
 	}
 
 	// load list to display all the files for open option
@@ -322,9 +327,7 @@ public class sci extends ActivityGroup implements SimpleGestureListener {
 					OutputStream outStream = null;
 
 					try {
-						File bfile = new File(
-								"/data/local/linux/var/www/html/scilab/code/.open_file.cde");
-
+						File bfile = new File(write_path);
 						inStream = new FileInputStream(oe_path + mChosenFile);
 						outStream = new FileOutputStream(bfile);
 
@@ -359,6 +362,8 @@ public class sci extends ActivityGroup implements SimpleGestureListener {
 
 		switch (item.getItemId()) {
 		case R.id.open:
+			ex_flag="open";
+	            	write_path="/data/local/linux/var/www/html/scilab/code/.open_file.cde";
 			oe_path = Environment.getExternalStorageDirectory()
 					+ "/APL/scilab/code/";
 			mPath = new File(oe_path);
@@ -371,13 +376,15 @@ public class sci extends ActivityGroup implements SimpleGestureListener {
 			test1();
 			return true;
 		case R.id.example:
+			ex_flag="example";
+	            	write_path="/data/example/scilab/.open_file.cde";
 			oe_path = "/data/local/linux/var/www/html/scilab/example/";
 			mPath = new File(oe_path);
 			loadFileList();
 			return true;
 		case R.id.help:
 
-			Intent myIntent = new Intent(sci.this, help.class);
+			Intent myIntent = new Intent(sci.this, scihelp.class);
 			startActivityForResult(myIntent, 0);
 
 			return true;

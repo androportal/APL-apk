@@ -38,6 +38,9 @@ public class py extends ActivityGroup {
 	private static final String FTYPE = ".py";
 	private static final int DIALOG_LOAD_FILE = 1000;
 	private String oe_path;
+	//added for example and open	
+	private String write_path;
+	private String ex_flag="open";
 
 	/** Called when the activity is first created. */
 	@Override
@@ -181,7 +184,10 @@ public class py extends ActivityGroup {
 		webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
 		webSettings.setAppCacheEnabled(false);
 		engine.setWebChromeClient(new MyWebChromeClient());
-		engine.loadUrl("javascript:submit_file()");
+		if(ex_flag=="open")
+	        	 engine.loadUrl("javascript:submit_file()");
+	        else if(ex_flag=="example")	        
+	        	 engine.loadUrl("javascript:example_file()");
 	}
 
 	// implemented android file explorer for listing the files
@@ -234,9 +240,7 @@ public class py extends ActivityGroup {
 					OutputStream outStream = null;
 
 					try {
-						File bfile = new File(
-								"/data/local/linux/var/www/html/python/code/.open_file.py");
-
+						File bfile = new File(write_path);
 						inStream = new FileInputStream(oe_path + mChosenFile);
 						outStream = new FileOutputStream(bfile);
 
@@ -270,6 +274,8 @@ public class py extends ActivityGroup {
 		// Handle item selection
 		switch (item.getItemId()) {
 		case R.id.open:
+			ex_flag="open";
+	            	write_path="/data/local/linux/var/www/html/python/code/.open_file.py";
 			oe_path = Environment.getExternalStorageDirectory()
 					+ "/APL/python/code/";
 			mPath = new File(oe_path);
@@ -279,13 +285,15 @@ public class py extends ActivityGroup {
 			test();
 			return true;
 		case R.id.example:
+			ex_flag="example";
+	            	write_path="/data/example/python/.open_file.py";
 			oe_path = "/data/local/linux/var/www/html/python/example/";
 			mPath = new File(oe_path);
 			loadFileList();
 			return true;
 		case R.id.help:
 
-			Intent myIntent = new Intent(py.this, help.class);
+			Intent myIntent = new Intent(py.this, pyhelp.class);
 			startActivityForResult(myIntent, 0);
 
 			return true;

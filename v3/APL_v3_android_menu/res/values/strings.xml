@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Aakash Programming Lab(APL)</string>
-    <string name="app_name1">Scilab 4.1.1</string>
-    <string name="app_name2">C programming with GCC</string>
-    <string name="app_name3">C++ programming with GCC</string>
-    <string name="app_name4">Python 2.6</string>
+    <string name="app_name1"> \t \t Type your Scilab code (4.1.1)\t \t \t \t \t \t \t \t \t \t Console Output </string>
+    <string name="app_name2"> \t \t Type your C code (GCC-4.6.3)\t \t \t \t \t \t \t \t \t \t Console Output </string>
+    <string name="app_name3"> \t \t Type your C++ code (GCC-4.6.3)\t \t \t \t \t \t \t \t \t  Console Output  </string>
+    <string name="app_name4"> \t \t Type your Python code (2.7.3)\t \t \t \t \t \t \t \t \t \t Console Output </string>
     <string name="app_name9">Aakash Programming Lab(APL)</string>
     <string name="app_name6">ImagePlot</string>
     <string name="app_name7">Help</string>
