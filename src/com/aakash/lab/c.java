@@ -344,7 +344,13 @@ public class c extends ActivityGroup {
 			WebView engine1 = (WebView) findViewById(R.id.webView2);
 			WebSettings webSettings1 = engine1.getSettings();
 			webSettings1.setJavaScriptEnabled(true);
-			engine1.reload();
+			try{
+				engine1.reload();
+				}catch(Exception e){
+				e.printStackTrace();
+				engine1.reload();
+				} 
+			
 		}
 	}
 

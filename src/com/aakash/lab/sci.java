@@ -223,8 +223,13 @@ public class sci extends ActivityGroup implements SimpleGestureListener {
 			WebView engine1 = (WebView) findViewById(R.id.webView2);
 			WebSettings webSettings1 = engine1.getSettings();
 			webSettings1.setJavaScriptEnabled(true);
-			// engine1.loadUrl("javascript:window.location.reload()");
-			engine1.reload();
+			
+			try{
+				engine1.reload();
+				}catch(Exception e){
+				e.printStackTrace();
+				engine1.reload();
+				} 
 		}
 	}
 
