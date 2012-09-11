@@ -12,4 +12,11 @@
     <string name="_c">"              C"</string>
     
 
+    <string name="somestring">
+      <div>
+		CONTENTS HERE
+        </div>
+   </string>
+    
+    
 </resources>

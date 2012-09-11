@@ -1,0 +1,60 @@
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:padding="20dp" >
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="File System Does Not Exist!"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#FFFFFF" />
+        
+         <View 	android:layout_width="wrap_content"
+            	android:layout_height="30dp"/>
+        
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+            android:layout_gravity="center"
+            android:text="                   Do you Want to Download and Install?"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#FFFFFF" />
+        
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="21dp" />
+
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="93dp"
+            android:orientation="horizontal"
+            android:padding="20dp" >
+
+            <Button
+                android:id="@+id/btnyes"
+                android:layout_width="20dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="50"
+                android:text="Yes" 
+                android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+            <Button
+                android:id="@+id/btnNo"
+                android:layout_width="20dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="50"
+                android:text="No"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        </LinearLayout>
+        
+       
+
+</LinearLayout>
