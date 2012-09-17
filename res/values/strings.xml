@@ -11,12 +11,23 @@
     <string name="app_name8">About</string>
     <string name="_c">"              C"</string>
     
-
-    <string name="somestring">
+    <string name="help_para1">
       <div>
-		CONTENTS HERE
+		<b><u>Welcome to Aakash Programmming Lab(apl)</u></b> \n\n
+		Aakash Programming Lab has <b>C</b>, <b>C++</b>, <b>Python</b> and <b>Scilab</b> as programming languages. \n
         </div>
    </string>
-    
-    
+   
+    <string name="help_para2">
+      <div>
+		Within each programming console, a detailed documentation along with reference manual, has been
+		provided. To read the documentation, click on <b>Option button</b>.
+        </div>
+   </string>
+   
+	<string name="help_para3">
+      <div>
+		This will pop an option Menu-Bar. Click <b>Help</b> for detailed help.
+        </div>
+   </string>
 </resources>
