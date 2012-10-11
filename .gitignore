@@ -19,8 +19,9 @@ gen/
 .settings/
 
 # Local configuration file (sdk path, etc)
-
 local.properties
 
+# ignore tar balls
+*.tar.gz
 
 

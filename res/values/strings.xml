@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Aakash Programming Lab(APL)</string>
-    <string name="app_name1">\t\tType your Scilab code (4.1.1)\t\t\t\t\t\t\t\t\t\t\tConsole Output </string>
+    <string name="app_name1">\t\tType your Scilab code (5.4)\t\t\t\t\t\t\t\t\t\t\tConsole Output </string>
     <string name="app_name2">\t\tType your C code (GCC 4.6.3)\t\t\t\t\t\t\t\t\t\tConsole Output </string>
     <string name="app_name3">\t\tType your C++ code (GCC 4.6.3)\t\t\t\t\t\t\t\t\t\tConsole Output  </string>
     <string name="app_name4">\t\tType your Python code (2.7.2)\t\t\t\t\t\t\t\t\t\tConsole Output </string>
