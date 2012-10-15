@@ -24,6 +24,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+//import android.os.PowerManager;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -56,20 +57,26 @@ public class APLActivity extends Activity implements OnClickListener {
     File checkImg;
     File checkImgextsd;
     File checkTar;
-    int rebootFlag = 0;
+    File help_flag;
+    //int rebootFlag = 0;
+     
     
-    //adding options to the options menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-    menu.add(group1Id, Help, Help, "Help");
-    return super.onCreateOptionsMenu(menu);
+    	// 'Help' menu to main page options menu
+    	menu.add(group1Id, Help, Help, "Help");
+    	return super.onCreateOptionsMenu(menu);	
     }
 
-    //code for the actions to be performed on clicking options menu goes here ...
-     @Override
+    @Override
      public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
+    	/*
+    	* when user clicks help menu on main page,
+    	* help_option_menu_flag is set to 1
+    	*/
+    	switch (item.getItemId()) {
         case 1:
+        	//Toast.makeText(context, "help_flag_option is set to 1", Toast.LENGTH_SHORT).show();
             help_option_menu_flag = 1;
             help_popup();
         }
@@ -97,8 +104,12 @@ public class APLActivity extends Activity implements OnClickListener {
         if(!path.exists()){
         	loadDataFromAsset();
         }
+        else {
+        	//Toast.makeText(context, "not copying files from asset", Toast.LENGTH_SHORT).show();
+        	System.out.println("NOT copying files from asset");
+        }
         
-        help_popup();
+        	help_popup();
     }
 
    
@@ -126,8 +137,6 @@ public class APLActivity extends Activity implements OnClickListener {
 
             try {
                 FileOutputStream output = openFileOutput("aakash.sh", Context.MODE_PRIVATE);
-                File f = getFileStreamPath("aakash.sh");
-                
                 output.write(buffer);
                 output.flush();
                 output.close();
@@ -144,7 +153,9 @@ public class APLActivity extends Activity implements OnClickListener {
                 e.printStackTrace();
             }
           
-            String[] command = {"busybox mv /mnt/sdcard/preinstall.sh /system/bin/","chown root.root /system/bin/preinstall.sh","chmod 555 /system/bin/preinstall.sh"};
+            String[] command = {"busybox mv /mnt/sdcard/preinstall.sh /system/bin/",
+            		"chown root.root /system/bin/preinstall.sh",
+            		"chmod 555 /system/bin/preinstall.sh"};
             RunAsRoot(command);
             FileOutputStream output = openFileOutput("copyFilesFlag.txt", Context.MODE_PRIVATE);
             output.flush();
@@ -160,7 +171,7 @@ public class APLActivity extends Activity implements OnClickListener {
 
 
     private void RunAsRoot(String[] command2) {
-        // TODO Auto-generated method stub
+        // run as a system command
         try {
             Process process = Runtime.getRuntime().exec("su");
             DataOutputStream os = new DataOutputStream(process.getOutputStream());
@@ -176,6 +187,7 @@ public class APLActivity extends Activity implements OnClickListener {
     }
     
     
+    ////////////////////////////
     private void help_popup() {
     	/**
          * checks existance of:
@@ -183,170 +195,179 @@ public class APLActivity extends Activity implements OnClickListener {
          * 2) /mnt/sdcard/apl.img
          * 3) /mnt/sdcard/apl.tar.gz
          * 4) /data/data/com.aakash.lab/files/help_flag.txt
+         * 
          **/
         File fstab = new File("/data/local/linux/etc/fstab");
         checkImg = new File("/mnt/sdcard/apl.img");
         checkImgextsd = new File("/mnt/extsd/apl.img");
         checkTar = new File("/mnt/sdcard/apl.tar.gz");
-        File help_flag = new File("/data/data/com.aakash.lab/files/help_flag.txt");
+        help_flag = new File("/data/data/com.aakash.lab/files/help_flag.txt");
         
-        if(!fstab.exists()){
-        	                 
-        	/**
-        	 * check existance of an image in both '/mnt/sdcard' and '/mnt/extsd'
-        	 **/
-            if(!checkImg.exists() || !checkImgextsd.exists()){
-            	
-            	if(!checkTar.exists()){
-            		
-                LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-                final View layout = inflater.inflate(R.layout.download_source,
-                        (ViewGroup) findViewById(R.id.layout_root));
-  
-                // Building DatepPcker dialog
-                AlertDialog.Builder builder = new AlertDialog.Builder(
-                        APLActivity.this);
-                builder.setView(layout);
-                builder.setTitle("Notice");
-                builder.setCancelable(false);
-                Button btnNO = (Button) layout.findViewById(R.id.btnNo);
-                btnNO.setOnClickListener(new OnClickListener() {
-                  
-                    public void onClick(View v) {
-                        finish();
-                        android.os.Process
-                                .killProcess(android.os.Process.myPid());
-                    }
-                });
-              
-                Button btnyes = (Button) layout.findViewById(R.id.btnyes);
-                btnyes.setOnClickListener(new OnClickListener() {
-                    public void onClick(View v) {
-                        startDownload();
-                        mProgressDialog = new ProgressDialog(context);
-                        mProgressDialog.setMessage("Downloading file..");
-                        mProgressDialog
-                                .setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                        mProgressDialog.setCancelable(false);
-                      
-                        mProgressDialog.setButton(DialogInterface.BUTTON_NEGATIVE,"Cancel",new DialogInterface.OnClickListener() {
-                          
-                            public void onClick(DialogInterface dialog, int which) {
-                                final AlertDialog.Builder builder = new AlertDialog.Builder(APLActivity.this);
-                                builder.setMessage("Are you sure you want cancel Downloading?")
-                                        .setCancelable(false)
-                                        .setPositiveButton("Yes",
-                                                new DialogInterface.OnClickListener() {
-                                                    public void onClick(DialogInterface dialog, int id) {
-                                                        dialog.dismiss();
-                                                        help_dialog.dismiss();
-                                                        String[] command = {"rm /data/local/apl.img"};
-                                                        RunAsRoot(command);  
-                                                        finish();
-                                                        android.os.Process
-                                                                .killProcess(android.os.Process.myPid());
-                                                    }
-                                                })
-                                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int id) {
-                                                mProgressDialog.show();
-                                            }
-                                        });
-                                AlertDialog alert = builder.create();
-                                alert.show();
-                              
-                            }
-                        });
-                        mProgressDialog.show();
-                    }
-  
-                    private void startDownload() {
-                    	if(isInternetOn()) {
-                            // INTERNET IS AVAILABLE, DO STUFF..
-                                Toast.makeText(context, "Connected To Network", Toast.LENGTH_SHORT).show();
-                            }else{
-                            // NO INTERNET AVAILABLE, DO STUFF..
-                                Toast.makeText(context, "Network Disconnected", Toast.LENGTH_SHORT).show();
-                                rebootFlag = 1;
-                                AlertDialog.Builder builder = new AlertDialog.Builder(APLActivity.this);
-                                builder.setMessage("No Connection Found, Please Check Your Network Settings!")
-                                        .setCancelable(false)
-                                        .setPositiveButton("OK",
-                                                new DialogInterface.OnClickListener() {
-                                                    public void onClick(DialogInterface dialog, int id) {
-                                                        finish();
-                                                        android.os.Process
-                                                                .killProcess(android.os.Process.myPid());
-                                                    }
-                                                });
-                                AlertDialog alert = builder.create();
-                                alert.show();
-                              
-                            }  
-                    	/**
-                    	 * for internal use only :P 
-                    	 **/
-                        String url = "http://10.102.152.27/installer/apl.tar.gz";
-                        new DownloadFileAsync().execute(url);
-                    }
-                  
-                    public final boolean isInternetOn() {
-                        ConnectivityManager connec =  (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
-                        // ARE WE CONNECTED TO THE NET
-                        NetworkInfo mwifi = connec.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-                        if ( connec.getNetworkInfo(0).getState() == NetworkInfo.State.CONNECTED ||
-                        connec.getNetworkInfo(0).getState() == NetworkInfo.State.CONNECTING ||
-                        connec.getNetworkInfo(1).getState() == NetworkInfo.State.CONNECTING ||
-                        connec.getNetworkInfo(1).getState() == NetworkInfo.State.CONNECTED ) {
-                        // MESSAGE TO SCREEN FOR TESTING (IF REQ)
-                        //Toast.makeText(this, connectionType + ” connected”, Toast.LENGTH_SHORT).show();
-                        return true;
-                        } else if ( connec.getNetworkInfo(0).getState() == NetworkInfo.State.DISCONNECTED ||  connec.getNetworkInfo(1).getState() == NetworkInfo.State.DISCONNECTED  ) {
-                        //System.out.println(“Not Connected”);
-                        return false;
-                        }
-                        return false;
-                        }
-                });
-                help_dialog = builder.create();
-                help_dialog.show();
-                WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-                // customizing the width and location of the dialog on screen
-                lp.copyFrom(help_dialog.getWindow().getAttributes());
-                lp.width = 500;
-                help_dialog.getWindow().setAttributes(lp);
-            	}
-            	else {
-					Toast.makeText(context, "TAR EXISTS", Toast.LENGTH_SHORT).show();
-					progressBar = new ProgressDialog(context);
-			        progressBar.setCancelable(false);
-			        progressBar.setMessage("Extracting files, please wait...");
-			        progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-			        progressBar.show();
-			
-			        new Extract_TAR_GZ_FILE().execute();
-            	}
-            }else if((!help_flag.exists() || help_option_menu_flag == 1) && fstab.exists()){
-            	/*
-            	 * if /data/data/com.aakash.lab/files/help_flag.txt NOT exist OR (is user have checked 'do not
-            	 * show me this dialog box(initial help page which pop's up at start up)') AND /data/local/linux
-            	 * /etc/fstab exists  
-            	 * 
-            	 * then
-            	 * 
-            	 * start the application  
-            	 * */
-            	startApp();
-            }else{
-            	fstab_flag = false;
-            	reboot();
-            }	
-        }else{
-        	// if '/data/local/linux/etc/fstab' exist THEN start the application  
-        	startApp();
+        if(fstab.exists()) {
+        	if ( help_option_menu_flag == 1 || !help_flag.exists()) {
+        		//Toast.makeText(context, "fstab exist , startapp()", Toast.LENGTH_SHORT).show();
+        		startApp();
+        	}
         }
-    }
+        else if(checkImg.exists()) {
+        	if((help_option_menu_flag == 1 || !help_flag.exists()) && fstab.exists()) {
+        		startApp();
+        	}
+        	else {
+        		fstab_flag = false;	
+        		//Toast.makeText(context, "fstab false, reboot...", Toast.LENGTH_SHORT).show();
+        		reboot();	
+        	}
+        } 
+        else if(checkTar.exists()) {
+        	// extract
+        	// reboot
+        	spinner();
+        } 
+        else {
+        	// download
+        	// extract
+        	// reboot
+        	//Toast.makeText(context, "start downloading", Toast.LENGTH_SHORT).show();
+        	LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+            final View layout = inflater.inflate(R.layout.download_source,
+                    (ViewGroup) findViewById(R.id.layout_root));
 
+            // Building DatepPcker dialog
+            AlertDialog.Builder builder = new AlertDialog.Builder(
+                    APLActivity.this);        	        	
+            builder.setView(layout);
+            builder.setTitle("Notice");
+            builder.setCancelable(false);
+            Button btnNO = (Button) layout.findViewById(R.id.btnNo);
+           
+            btnNO.setOnClickListener(new OnClickListener() {
+            	public void onClick(View v) {
+            		finish();
+                    	android.os.Process
+                    	.killProcess(android.os.Process.myPid());
+                }	
+            });	
+          
+            Button btnyes = (Button) layout.findViewById(R.id.btnyes);
+            btnyes.setOnClickListener(new OnClickListener() {
+                public void onClick(View v) {
+                    startDownload();
+                    mProgressDialog = new ProgressDialog(context);
+                    mProgressDialog.setMessage("Downloading file..");
+                    mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                    mProgressDialog.setCancelable(false);
+                    mProgressDialog.setButton(DialogInterface.BUTTON_NEGATIVE,"Cancel",new DialogInterface.OnClickListener() {
+                      
+                        public void onClick(DialogInterface dialog, int which) {
+                            final AlertDialog.Builder builder = new AlertDialog.Builder(APLActivity.this);
+                            builder.setMessage("Are you sure you want cancel downloading?")
+                                    .setCancelable(false)
+                                    .setPositiveButton("Yes",
+                                            new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog, int id) {
+                                                    dialog.dismiss();
+                                                    help_dialog.dismiss();
+                                                    String[] command = {"rm /mnt/sdcard/apl.tar.gz"};
+                                                    RunAsRoot(command);  
+                                                    finish();
+                                                    android.os.Process.killProcess(android.os.Process.myPid());
+                                                }
+                                            })
+                                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            mProgressDialog.show();
+                                        }
+                                    });
+                            AlertDialog alert = builder.create();
+                            alert.show();
+                          
+                        }
+                    });
+                    mProgressDialog.show();
+                }
+            });
+            
+            help_dialog = builder.create();
+            help_dialog.show();
+            WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+            // customizing the width and location of the dialog on screen
+            lp.copyFrom(help_dialog.getWindow().getAttributes());
+            lp.width = 500;
+            help_dialog.getWindow().setAttributes(lp);
+            
+        	}
+        }
+        
+        ////////////////////////////
+        
+    
+    private void startDownload() {
+        	if(isInternetOn()) {
+                // INTERNET IS AVAILABLE, DO STUFF..
+                    Toast.makeText(context, "Connected to network", Toast.LENGTH_SHORT).show();
+                }else{
+                // NO INTERNET AVAILABLE, DO STUFF..
+                    Toast.makeText(context, "Network disconnected", Toast.LENGTH_SHORT).show();
+                    //rebootFlag = 1;
+                    AlertDialog.Builder builder = new AlertDialog.Builder(APLActivity.this);
+                    builder.setMessage("No Connection Found, please check your network setting!")
+                            .setCancelable(false)
+                            .setPositiveButton("OK",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            finish();
+                                            android.os.Process
+                                                    .killProcess(android.os.Process.myPid());
+                                        }
+                                    });
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                  
+                }  
+        	/**
+        	 * below link is within IITB
+        	 **/
+            String url = "http://10.102.152.27/installer/apl.tar.gz";
+            new DownloadFileAsync().execute(url);
+        }    
+        
+     private final boolean isInternetOn() {
+    	// check internet connection via wifi   
+    	 	ConnectivityManager connec =  (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+    	 	//NetworkInfo mwifi = connec.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+    	 	//mwifi = connec.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+            if( connec.getNetworkInfo(0).getState() == NetworkInfo.State.CONNECTED ||
+            connec.getNetworkInfo(0).getState() == NetworkInfo.State.CONNECTING ||
+            connec.getNetworkInfo(1).getState() == NetworkInfo.State.CONNECTING ||
+            connec.getNetworkInfo(1).getState() == NetworkInfo.State.CONNECTED ) {
+            	//Toast.makeText(this, connectionType + ” connected”, Toast.LENGTH_SHORT).show();
+            	return true;
+            } 
+            else if( connec.getNetworkInfo(0).getState() == NetworkInfo.State.DISCONNECTED ||  
+            		connec.getNetworkInfo(1).getState() == NetworkInfo.State.DISCONNECTED  ) {
+            		//System.out.println(“Not Connected”);
+            		return false;
+            	}
+            	return false;
+            }
+          
+    private void spinner() {
+    	// will start spinner first and then extraction
+    	
+    	// start spinner to show extraction progress
+    	progressBar = new ProgressDialog(context);
+        progressBar.setCancelable(false);
+        progressBar.setMessage("Extracting files, please wait...");
+        progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressBar.show();
+        
+        // start actual extraction
+        new Extract_TAR_GZ_FILE().execute();
+    }
+    
+    
+    // START-APP
     private void startApp() {
 		/**
 		 * start the application and show initial help pop-up
@@ -356,17 +377,25 @@ public class APLActivity extends Activity implements OnClickListener {
         final View layout = inflater.inflate(R.layout.help_popup,
                 (ViewGroup) findViewById(R.id.layout_root));
 
-        // Building DatepPcker dialog
-        AlertDialog.Builder builder = new AlertDialog.Builder(
-                APLActivity.this);
+        // builder
+        AlertDialog.Builder builder = new AlertDialog.Builder(APLActivity.this);
         builder.setView(layout);
         builder.setTitle("Help");
       
         CheckBox cbHelp = (CheckBox)layout.findViewById(R.id.cbHelp);
       
-        if(help_option_menu_flag == 1){
-            cbHelp.setChecked(true);
+                
+        if(help_option_menu_flag == 1) { 
+        	if (help_flag.exists()) {
+        		//Toast.makeText(context, "both exist", Toast.LENGTH_SHORT).show();
+            	cbHelp.setChecked(true);
+        	}
         }
+        else {
+        	//Toast.makeText(context, "only one exists", Toast.LENGTH_SHORT).show();
+        	cbHelp.setChecked(false);
+        }
+        
       
         cbHelp.setOnClickListener(new OnClickListener() {
 
@@ -374,29 +403,33 @@ public class APLActivity extends Activity implements OnClickListener {
       
         //for setting the visibility of EditText:'etProject' depending upon the condition
             if (((CheckBox) v).isChecked()) {
+            	//Toast.makeText(context, "TRUE", Toast.LENGTH_SHORT).show();
                 checkFlag = "true";
             }
             else {
+            	//Toast.makeText(context, "FALSE", Toast.LENGTH_SHORT).show();
                 checkFlag = "false";
             }
         }
         });
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                // TODO Auto-generated method stub
-                if(("true").equals(checkFlag)){
+                // 
+                if(("true").equals(checkFlag)) {
                     try {
-                        FileOutputStream output = openFileOutput("help_flag.txt", Context.MODE_PRIVATE);
+                    	FileOutputStream output = openFileOutput("help_flag.txt", Context.MODE_PRIVATE);
                         output.flush();
                         output.close();
-                       
-                    } catch (IOException e) {
+                        
+                    }
+                    catch (IOException e) {
                         e.printStackTrace();
                     }
                 }
-                if(("false").equals(checkFlag)){
-                    String[] command = {"rm -r /data/data/com.aakash.lab/files/help_flag.txt"};
+                else if(("false").equals(checkFlag)){
+                    String[] command = {"busybox rm -r /data/data/com.aakash.lab/files/help_flag.txt"};
                     RunAsRoot(command);
+                	//Toast.makeText(context, "help_flag deleted", Toast.LENGTH_SHORT).show();
                 }
             }
           
@@ -410,44 +443,44 @@ public class APLActivity extends Activity implements OnClickListener {
         lp.width = 700;
         help_dialog.getWindow().setAttributes(lp);
 	}
-
+    // START-APP END
+    
+    
+    // MAIN PAGE ICONS
 	public void onClick(View v) {
-        // TODO Auto-generated method stub
-        switch (v.getId()) {
+        // main page
+        switch (v.getId()) { 
         case R.id.imageButton1:
-
             Intent myIntent = new Intent(v.getContext(), c.class);
             startActivityForResult(myIntent, 0);
             break;
-        case R.id.imageButton2:
 
+        case R.id.imageButton2:
             Intent myIntent1 = new Intent(v.getContext(), cp.class);
             startActivityForResult(myIntent1, 0);
             break;
 
         case R.id.imageButton3:
-
             Intent myIntent3 = new Intent(v.getContext(), py.class);
             startActivityForResult(myIntent3, 0);
-
             break;
-        case R.id.imageButton4:
 
+        case R.id.imageButton4:
             Intent myIntent4 = new Intent(v.getContext(), sci.class);
             startActivityForResult(myIntent4, 0);
-
             break;
 
         default:
             break;
         }
     }
+	// MAIN PAGE ICONS END
+    
 
-    @Override
-    // implemented application exit for the user
-    public void onBackPressed() {
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+	// ask the user before exiting the application
+	@Override
+	public void onBackPressed() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Are you sure you want to exit?")
                 .setCancelable(false)
                 .setPositiveButton("Yes",
@@ -467,14 +500,15 @@ public class APLActivity extends Activity implements OnClickListener {
         alert.show();
     }
 
+	
+    // DOWNLOAD ??
     class DownloadFileAsync extends AsyncTask<String, String, String> {
     	/**
     	 * download tar.gz from URL and write in '/mnt/sdcard'
     	 **/
-        @Override
+        @Override        	
         public void onPreExecute() {
             super.onPreExecute();
-
         }
 
         public String doInBackground(String... aurl) {
@@ -510,31 +544,18 @@ public class APLActivity extends Activity implements OnClickListener {
         }
 
         public void onProgressUpdate(String... progress) {
-
             mProgressDialog.setProgress(Integer.parseInt(progress[0]));
         }
+        
         public void onPostExecute(String unused) {
-     
-        mProgressDialog.dismiss();
-        help_dialog.dismiss();
-        if(checkTar.exists() && rebootFlag == 0){
-	        /**
-	         * if tar file exists THEN
-	         * start file extraction spinner
-	         **/
-	        progressBar = new ProgressDialog(context);
-	        progressBar.setCancelable(false);
-	        progressBar.setMessage("Extracting files, please wait...");
-	        progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-	        progressBar.show();
-	
-	        new Extract_TAR_GZ_FILE().execute();
-        }
+        	mProgressDialog.dismiss();
+        	help_dialog.dismiss();
+        
+        	if (checkTar.exists()){
+        		spinner();
+        	}
     }
-        
-        
-       
-        //delete internal files during uninstallation
+        //delete internal files during un-installation 
         public boolean deleteFile (String name){
             name = "aakash.sh";
             name = "help_flag";
@@ -544,7 +565,8 @@ public class APLActivity extends Activity implements OnClickListener {
         }
 }
     
-public class Extract_TAR_GZ_FILE extends AsyncTask<String, String, String>{
+    // EXTRACT CLASS
+    public class Extract_TAR_GZ_FILE extends AsyncTask<String, String, String>{
         /**
          * extract an image asynchronously to '/mnt/sdcard'
          **/
@@ -599,7 +621,7 @@ public class Extract_TAR_GZ_FILE extends AsyncTask<String, String, String>{
 
 		@Override
 		protected String doInBackground(String... params) {
-			// TODO Auto-generated method stub
+			// 
 			try {         
                 String strSourceFile = "/mnt/sdcard/apl.tar.gz";
                 String strDest = "/mnt/sdcard/";
@@ -617,12 +639,13 @@ public class Extract_TAR_GZ_FILE extends AsyncTask<String, String, String>{
 
 		@Override
 		protected void onPostExecute(String result) {
-			// TODO Auto-generated method stub
+			// 
 			super.onPostExecute(result);
 			progressBar.dismiss();
-			if (checkImg.exists()){
+			if (checkImg.exists()){ 
 			reboot();
-			}else{
+			}
+			else {
 				AlertDialog.Builder builder = new AlertDialog.Builder(APLActivity.this);
 		        builder.setMessage("Failed to download apl.img, exiting the application")
 		                .setCancelable(false)
@@ -641,35 +664,58 @@ public class Extract_TAR_GZ_FILE extends AsyncTask<String, String, String>{
 			}
 		}
     }
+	// EXTRACT CLASS END
 
+    // REBOOT
 	public void reboot() {
-		// reboot the device
+		// reboot the device so that the filesystem is mounted
 		AlertDialog.Builder builder = new AlertDialog.Builder(APLActivity.this);
 		if (fstab_flag == true){
-		builder.setMessage("To apply your changes, please reboot")
+		builder.setMessage("To apply changes, please reboot")
 	            .setCancelable(false)
-	            .setPositiveButton("OK",
+	            .setPositiveButton("Reboot",
 	                    new DialogInterface.OnClickListener() {
 	                        public void onClick(DialogInterface dialog, int id) {
-	                            String[] rebootCommand = {"reboot"};
+	                        
+	                        	String[] rebootCommand = {"reboot"};
 	                            RunAsRoot(rebootCommand);
+	                                         
 	                        }
-	                   
-	                    });
-		}else{
+	            })        	
+	             .setNegativeButton("Not now", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                    	finish();
+                        android.os.Process.killProcess(android.os.Process.myPid());
+                    }
+                });
+		}
+		else {
 			builder.setMessage("Filesystem not mounted, device requires a reboot")
             .setCancelable(false)
-            .setPositiveButton("OK",
+            .setPositiveButton("Reboot",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            String[] rebootCommand = {"reboot"};
+                            
+                        	String[] rebootCommand = {"reboot"};
                             RunAsRoot(rebootCommand);
+ 							                     	                    		
                         }
                    
-                    });
+                    })
+                .setNegativeButton("Not now", new DialogInterface.OnClickListener() {
+                		public void onClick(DialogInterface dialog, int id) {
+                			finish();
+                        android.os.Process
+                                .killProcess(android.os.Process.myPid());
+                    }
+                });
 			
 		}
+		
+		
 	    AlertDialog alert1 = builder.create();
 	    alert1.show();
-} 
+	}
+	// REBOOT END
+	
 }
