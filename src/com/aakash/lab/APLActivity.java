@@ -218,7 +218,17 @@ public class APLActivity extends Activity implements OnClickListener {
         		//Toast.makeText(context, "fstab false, reboot...", Toast.LENGTH_SHORT).show();
         		reboot();	
         	}
-        } 
+        }
+        else if(checkImgextsd.exists()) {
+        	if((help_option_menu_flag == 1 || !help_flag.exists()) && fstab.exists()) {
+        		startApp();
+        	}
+        	else {
+        		fstab_flag = false;	
+        		//Toast.makeText(context, "fstab false, reboot...", Toast.LENGTH_SHORT).show();
+        		reboot();	
+        	}
+        }
         else if(checkTar.exists()) {
         	// extract
         	// reboot
