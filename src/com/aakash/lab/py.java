@@ -11,13 +11,19 @@ import android.content.Intent;
 
 import android.os.Bundle;
 import android.os.Environment;
+import android.text.SpannableString;
+import android.text.method.LinkMovementMethod;
+import android.text.util.Linkify;
 import android.util.Log;
 
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -27,6 +33,7 @@ import com.aakash.lab.R;
 import com.aakash.lab.c.MyWebChromeClient;
 
 import android.webkit.JsResult;
+import android.widget.TextView;
 
 public class py extends ActivityGroup {
 
@@ -299,9 +306,36 @@ public class py extends ActivityGroup {
 			return true;
 		case R.id.about:
 
-			Intent myIntent1 = new Intent(py.this, about.class);
-			startActivityForResult(myIntent1, 0);
+			AlertDialog about_dialog;
+			final SpannableString s = new SpannableString(py.this.getText(R.string.about_para1));
+			Linkify.addLinks(s, Linkify.WEB_URLS);
+						
+	        // Building DatepPcker dialog
+	        AlertDialog.Builder builder = new AlertDialog.Builder(
+	                py.this);
+	        builder.setTitle(R.string.about_heading);
+	        builder.setIcon(R.drawable.apl);
+	        builder.setMessage(s);
+	        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+	            public void onClick(DialogInterface dialog, int which) {
+	                // TODO Auto-generated method stub
+	                
+	            }
+	          
+	        });
+	      
+	        about_dialog = builder.create();
+	        about_dialog.show();
+	        ((TextView)about_dialog.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
+	        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+	        // customizing the width and location of the dialog on screen
+	        lp.copyFrom(about_dialog.getWindow().getAttributes());
+	        lp.width = 600;
+	        
+	        
+	        about_dialog.getWindow().setAttributes(lp);
 			return true;
+
 
 		default:
 			return super.onOptionsItemSelected(item);

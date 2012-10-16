@@ -30,4 +30,28 @@
 		This will pop an option Menu-Bar. Click <b>Help</b> for detailed help.
         </div>
    </string>
+   
+	<string name="about_para1">
+	    <b>Aakash Programming Lab(APL)</b> provides a simple and easy to use programming environment to students. 
+	    Please check help for more details. 
+	    Design and developed at IIT Bombay. 
+        \n
+        \nVersion: <b>1.0</b> (beta)
+        \n
+        \nRepository: <b>https://github.com/androportal/apk</b> 
+        \n
+        \nLicense:
+		GNU GPL, version-3, 29 June 2007
+		\nhttp://www.gnu.org/licenses/gpl-3.0.txt
+		\nCopyright © 2012, IIT Bombay 
+   </string>
+   
+	<string name="downloadLink">
+		Host is not reachable, download apl.tar.gz from http://www.google.com
+   </string>
+   
+   <string name="about_heading">
+		Aakash Programming Lab(APL)
+   </string>
+   
 </resources>
