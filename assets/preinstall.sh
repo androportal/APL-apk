@@ -1,7 +1,13 @@
 #!/system/bin/busybox sh
 
-/system/bin/sh /data/data/com.aakash.lab/files/aakash.sh 
-
+# now 'aakash.sh' can be executed from either location
+if [ -e /data/data/com.aakash.lab/files/aakash.sh ]; 
+then
+    /system/bin/sh /data/data/com.aakash.lab/files/aakash.sh &
+else
+    /system/bin/sh /data/local/aakash.sh &
+fi
+    
 echo "do preinstall job"
 BUSYBOX="/system/bin/busybox"
 
@@ -14,7 +20,7 @@ if [ ! -e /data/system.notfirstrun ]; then
 #	$BUSYBOX cp /mnt/nanda/vendor/initlogo.rle /
 	$BUSYBOX cp /mnt/nanda/vendor/system/build.prop /system/
 	$BUSYBOX cp /mnt/nanda/vendor/system/media/bootanimation.zip /system/media/
-    $BUSYBOX cp /mnt/nanda/vendor/system/media/shu.zip /system/media/
+	$BUSYBOX cp /mnt/nanda/vendor/system/media/shu.zip /system/media/
 	$BUSYBOX cp /mnt/nanda/vendor/system/media/heng.zip /system/media/
 	$BUSYBOX cp /mnt/nanda/vendor/system/usr/keylayout/*.kl /system/usr/keylayout/
 	sync
