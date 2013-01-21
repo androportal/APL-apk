@@ -1,9 +1,11 @@
 #!/system/bin/sh
 
 export bin=/system/bin
-export PATH=$bin:/usr/bin:/usr/sbin:/bin:$PATH
+export PATH=$bin:/usr/bin:/usr/sbin:/bin:/usr/local/bin:$PATH
 export TERM=linux
 export HOME=/root
+
+### aakash programming lab
 export MNT=/data/local/linux
 export EG=/data/example
 export SDCARD=/mnt/sdcard/APL
@@ -11,16 +13,15 @@ export WWW=/data/local/linux/var/www/html
 
 ### gkaakash 
 export MNTG=/data/local/gkaakash
-###
 
-#/system/bin/sh /data/local/gkstart.sh
+### ipython
+export MNTI=/data/local/ipy
 
-FLAG=1
-SD=1
+APL=1
+GK=1
+IPY=1
 
-while [ $FLAG -eq 1 ]
-do
-    function startServices 
+function startServicesAPL
     {
         # mounting essential file systems to chroot
         busybox mount -t proc proc $MNT/proc
@@ -29,29 +30,6 @@ do
         busybox  chroot  $MNT /bin/bash -c "mount /dev/pts" 
         busybox  chroot  $MNT /bin/bash -c "chown -R www-data.www-data /var/www/"
         busybox  chroot  $MNT /bin/bash -c "chmod -R a+x /usr/lib/cgi-bin"
- 
- 
-        # mounting essential file systems to chroot for gkaakash
-	if [ -f /mnt/sdcard/gkaakash.img ] && [ $SD -eq 1 ]
-	then
-	    busybox mount -o loop /mnt/sdcard/gkaakash.img $MNTG
-            busybox mount -t proc proc $MNTG/proc
-            busybox mount -o bind /dev $MNTG/dev
-            busybox mount -t sysfs sysfs $MNTG/sys
-            busybox  chroot  $MNTG /bin/bash -c "mount /dev/pts" 
-            #busybox chroot $MNTG /bin/bash -c "source /root/.bashrc"
-            busybox chroot /data/local/gkaakash /bin/bash -c "python /root/gkAakashCore/gkstart &>'/dev/null'&"
-		
-	elif [ -f /mnt/extsd/gkaakash.img ] && [ $SD -eq 1 ]
-	then
-	    busybox mount -o loop /mnt/extsd/gkaakash.img $MNTG
-            busybox mount -t proc proc $MNTG/proc
-            busybox mount -o bind /dev $MNTG/dev
-            busybox mount -t sysfs sysfs $MNTG/sys
-            busybox  chroot  $MNTG /bin/bash -c "mount /dev/pts" 
-            #busybox chroot $MNTG /bin/bash -c "source /root/.bashrc"
-            busybox chroot /data/local/gkaakash /bin/bash -c "python /root/gkAakashCore/gkstart &>'/dev/null'&"
-	fi
 
         # cleaning and starting apache 
         busybox  chroot  $MNT /bin/bash -c "rm /dev/null"
@@ -69,34 +47,8 @@ do
         busybox  chroot  $MNT /bin/bash -c "shellinaboxd --localhost-only -t -s /:www-data:www-data:/:true &"
         busybox  chroot  $MNT /bin/bash -c "rm /tmp/.X0-*" 
         busybox  chroot  $MNT /bin/bash -c "nohup Xvfb :0 -screen 0 640x480x24 -ac < /dev/null > Xvfb.out 2> Xvfb.err &"
-    }
 
-    busybox mkdir -p $MNT
-    busybox mkdir -p $MNTG
-    
-    if [ -f /mnt/sdcard/apl.img ] && [ $SD -eq 1 ]
-    then
-        busybox mount -o loop /mnt/sdcard/apl.img /data/local/linux
-        startServices    
-        SD=0
-	
-    elif [ -f /mnt/extsd/apl.img ] && [ $SD -eq 1 ]
-    then
-        busybox mount -o loop /mnt/extsd/apl.img /data/local/linux 
-        startServices
-        SD=0
-    fi
-    
-    
-    while [ $(ps|busybox grep com.aakash.lab |busybox wc -l) -eq 1 ]
-    
-    do
-#        	busybox  chroot  $MNT /bin/bash -c "mkdir /proc"
-#        	busybox  chroot  $MNT /bin/bash -c "mkdir /sys"
-#        	busybox  chroot  $MNT /bin/bash -c "mkdir -p /dev/pts"
-#        	busybox  chroot  $MNT /bin/bash -c "echo 1 > /proc/sys/vm/drop_caches"
         	
-	
         if [ ! -d ${SDCARD} ] || [ ! -d ${WWW} ] || [ ! -d ${EG} ]
         then                                                                  
 	    busybox mkdir -p ${SDCARD}/c/code                                         
@@ -128,15 +80,87 @@ do
         busybox mount -o bind ${SDCARD}/scilab/code ${WWW}/scilab/code
         busybox mount -o bind ${SDCARD}/scilab/image ${WWW}/scilab/image
 	
-	busybox mount -o bind ${EG}/c ${WWW}/c/exbind
+    	busybox mount -o bind ${EG}/c ${WWW}/c/exbind
         busybox mount -o bind ${EG}/cpp ${WWW}/cpp/exbind
         busybox mount -o bind ${EG}/python ${WWW}/python/exbind
         busybox mount -o bind ${EG}/scilab ${WWW}/scilab/exbind
 	
-    	FLAG=0
-        exit 0 
-    done
-    sleep 1 
+    }
+
+####################################################################################################
+
+
+while true
+  do
+    if [ $(mount | busybox grep /mnt/sdcard |busybox wc -l) -eq 2 ]
+    then    
+        busybox mkdir -p $MNT $MNTG $MNTI
     
+        if [ -f /mnt/sdcard/apl.img ] && [ $APL -eq 1 ]
+        then
+            busybox mount -o loop /mnt/sdcard/apl.img /data/local/linux
+            startServicesAPL
+            APL=0
+	
+        elif [ -f /mnt/extsd/apl.img ] && [ $APL -eq 1 ]
+        then
+            busybox mount -o loop /mnt/extsd/apl.img /data/local/linux 
+            startServicesAPL
+            APL=0
+        fi 
+        
+	##############################################################
+
+        if [ -f /mnt/sdcard/gkaakash.img ] && [ $GK -eq 1 ]
+        then
+            # mounting essential file systems to chroot for gkaakash
+        	busybox mount -o loop /mnt/sdcard/gkaakash.img $MNTG
+            busybox mount -t proc proc $MNTG/proc
+            busybox mount -o bind /dev $MNTG/dev
+            busybox mount -t sysfs sysfs $MNTG/sys
+            busybox chroot  $MNTG /bin/bash -c "mount /dev/pts" 
+            busybox chroot $MNTG /bin/bash -c "source /root/.bashrc"
+        	#busybox chroot /data/local/gkaakash /bin/bash -c "python /root/gkAakashCore/gkstart &> '/dev/null' &"
+        	busybox chroot ${MNTG} /bin/bash -c "/root/gkAakashCore/gkstart"
+            GK=0
+	
+            elif [ -f /mnt/extsd/gkaakash.img ] && [ $GK -eq 1 ]
+            then
+            # mounting essential file systems to chroot for gkaakash
+        	busybox mount -o loop /mnt/extsd/gkaakash.img $MNTG
+            busybox mount -t proc proc $MNTG/proc
+            busybox mount -o bind /dev $MNTG/dev
+            busybox mount -t sysfs sysfs $MNTG/sys
+            busybox chroot  $MNTG /bin/bash -c "mount /dev/pts" 
+            busybox chroot $MNTG /bin/bash -c "source /root/.bashrc"
+	        #busybox chroot /data/local/gkaakash /bin/bash -c "python /root/gkAakashCore/gkstart &> '/dev/null' &"
+        	busybox chroot ${MNTG} /bin/bash -c "/root/gkAakashCore/gkstart"
+            GK=0
+        fi
+        
+	###############################################################
+
+        if [ -f /mnt/sdcard/ipy.img ] && [ $IPY -eq 1 ]
+        then
+        	busybox mount -o loop /mnt/sdcard/ipy.img $MNTI
+            busybox mount -t proc proc $MNTI/proc
+            busybox mount -o bind /dev $MNTI/dev
+            busybox mount -t sysfs sysfs $MNTI/sys
+            busybox chroot $MNTI /bin/bash -c "mount /dev/pts" 
+    	    busybox chroot $MNTI /bin/bash -c "/root/ipython/ipython.py notebook --no-mathjax --pylab=inline &"
+            IPY=0
+    
+        elif [ -f /mnt/extsd/ipy.img ] && [ $IPY -eq 1 ]
+        then
+    	    busybox mount -o loop /mnt/extsd/ipy.img $MNTI
+            busybox mount -t proc proc $MNTI/proc
+            busybox mount -o bind /dev $MNTI/dev
+            busybox mount -t sysfs sysfs $MNTI/sys
+            busybox chroot $MNTI /bin/bash -c "mount /dev/pts" 
+            busybox chroot $MNTI /bin/bash -c "/root/ipython/ipython.py notebook --no-mathjax --pylab=inline &"
+            IPY=0
+        fi
+        exit 0
+    fi
+    sleep 1 
 done
-exit 0

@@ -336,12 +336,13 @@ public class APLActivity extends Activity implements OnClickListener {
                   
                 }  
         	/**
-        	 * below link is within IITB
+        	 * global github link for downloading image
         	 **/
-            String url = "http://10.102.152.27/installer/apl.tar.gz";
-            new DownloadFileAsync().execute(url);
+        	String url = "http://aakashlabs.org/builds/apl.tar.gz";
+        	new DownloadFileAsync().execute(url);
         }    
         
+    
      private final boolean isInternetOn() {
     	// check internet connection via wifi   
     	 	ConnectivityManager connec =  (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -360,7 +361,7 @@ public class APLActivity extends Activity implements OnClickListener {
             		return false;
             	}
             	return false;
-            }
+    }
           
     private void spinner() {
     	// will start spinner first and then extraction
