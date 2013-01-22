@@ -7,18 +7,18 @@ About
 
 This repository contains an Android source code for **Aakash
 Programming Lab(APL)**. It contain three major branches, ``ics``,
-``froyo`` and ``absolete``. ``ics`` and ``froyo`` will be actively
-maintained. As the name suggest ``absolete`` branch is no longer used.
+``froyo`` and ``absolete``. ``ics`` will be actively maintained. As
+the name suggest ``absolete`` branch is no longer used.
 
 
-How to use
-----------
+Usage
+-----
 
 clone the repository by typing
 
 ::
 
-   git clone https://github.com/androportal/apk.git
+   git clone https://github.com/androportal/APL-apk.git
 
 
 you can checkout particular branch using
@@ -56,4 +56,12 @@ Working with project using `eclipse <http://www.eclipse.org/>`_
 - Open ``eclipse`` and goto ``file`` -> ``import`` -> ``Android`` ->
   ``Existing Android Code into Workspace``, click `Next` and browse
   the repository. click `OK` and `Finish`
+
+
+Installing
+----------
+
+for installation instructions, please visit `installer
+<https://github.com/androportal/installer>`_
+
 
