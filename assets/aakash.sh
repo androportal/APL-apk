@@ -120,8 +120,8 @@ while true
             busybox mount -t sysfs sysfs $MNTG/sys
             busybox chroot  $MNTG /bin/bash -c "mount /dev/pts" 
             busybox chroot $MNTG /bin/bash -c "source /root/.bashrc"
-        	#busybox chroot /data/local/gkaakash /bin/bash -c "python /root/gkAakashCore/gkstart &> '/dev/null' &"
-        	busybox chroot ${MNTG} /bin/bash -c "/root/gkAakashCore/gkstart"
+        	#busybox chroot /data/local/gkaakash /bin/bash -c "python /root/ABTcore/abtstart &> '/dev/null' &"
+        	busybox chroot ${MNTG} /bin/bash -c "/root/ABTcore/abtstart"
             GK=0
 	
             elif [ -f /mnt/extsd/gkaakash.img ] && [ $GK -eq 1 ]
@@ -133,8 +133,8 @@ while true
             busybox mount -t sysfs sysfs $MNTG/sys
             busybox chroot  $MNTG /bin/bash -c "mount /dev/pts" 
             busybox chroot $MNTG /bin/bash -c "source /root/.bashrc"
-	        #busybox chroot /data/local/gkaakash /bin/bash -c "python /root/gkAakashCore/gkstart &> '/dev/null' &"
-        	busybox chroot ${MNTG} /bin/bash -c "/root/gkAakashCore/gkstart"
+	        #busybox chroot /data/local/gkaakash /bin/bash -c "python /root/ABTcore/abtstart &> '/dev/null' &"
+        	busybox chroot ${MNTG} /bin/bash -c "/root/ABTcore/abtstart"
             GK=0
         fi
         
