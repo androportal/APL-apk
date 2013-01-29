@@ -11,14 +11,14 @@ export EG=/data/example
 export SDCARD=/mnt/sdcard/APL
 export WWW=/data/local/linux/var/www/html
 
-### gkaakash 
-export MNTG=/data/local/gkaakash
+### abt
+export MNTG=/data/local/abt
 
 ### ipython
 export MNTI=/data/local/ipy
 
 APL=1
-GK=1
+ABT=1
 IPY=1
 
 function startServicesAPL
@@ -111,38 +111,38 @@ while true
         
 	##############################################################
 
-        if [ -f /mnt/sdcard/gkaakash.img ] && [ $GK -eq 1 ]
+        if [ -f /mnt/sdcard/abt.img ] && [ $ABT -eq 1 ]
         then
-            # mounting essential file systems to chroot for gkaakash
-        	busybox mount -o loop /mnt/sdcard/gkaakash.img $MNTG
+            # mounting essential file systems to chroot for ABT
+            busybox mount -o loop /mnt/sdcard/abt.img $MNTG
             busybox mount -t proc proc $MNTG/proc
             busybox mount -o bind /dev $MNTG/dev
             busybox mount -t sysfs sysfs $MNTG/sys
             busybox chroot  $MNTG /bin/bash -c "mount /dev/pts" 
             busybox chroot $MNTG /bin/bash -c "source /root/.bashrc"
-        	#busybox chroot /data/local/gkaakash /bin/bash -c "python /root/ABTcore/abtstart &> '/dev/null' &"
-        	busybox chroot ${MNTG} /bin/bash -c "/root/ABTcore/abtstart"
-            GK=0
+            #busybox chroot /data/local/abt /bin/bash -c "python /root/ABTcore/abtstart &> '/dev/null' &"
+            busybox chroot ${MNTG} /bin/bash -c "/root/ABTcore/abtstart"
+            ABT=0
 	
-            elif [ -f /mnt/extsd/gkaakash.img ] && [ $GK -eq 1 ]
+            elif [ -f /mnt/extsd/abt.img ] && [ $ABT -eq 1 ]
             then
-            # mounting essential file systems to chroot for gkaakash
-        	busybox mount -o loop /mnt/extsd/gkaakash.img $MNTG
+            # mounting essential file systems to chroot for ABT
+            busybox mount -o loop /mnt/extsd/abt.img $MNTG
             busybox mount -t proc proc $MNTG/proc
             busybox mount -o bind /dev $MNTG/dev
             busybox mount -t sysfs sysfs $MNTG/sys
             busybox chroot  $MNTG /bin/bash -c "mount /dev/pts" 
             busybox chroot $MNTG /bin/bash -c "source /root/.bashrc"
-	        #busybox chroot /data/local/gkaakash /bin/bash -c "python /root/ABTcore/abtstart &> '/dev/null' &"
-        	busybox chroot ${MNTG} /bin/bash -c "/root/ABTcore/abtstart"
-            GK=0
+            #busybox chroot /data/local/abt /bin/bash -c "python /root/ABTcore/abtstart &> '/dev/null' &"
+            busybox chroot ${MNTG} /bin/bash -c "/root/ABTcore/abtstart"
+            ABT=0
         fi
         
 	###############################################################
 
         if [ -f /mnt/sdcard/ipy.img ] && [ $IPY -eq 1 ]
         then
-        	busybox mount -o loop /mnt/sdcard/ipy.img $MNTI
+            busybox mount -o loop /mnt/sdcard/ipy.img $MNTI
             busybox mount -t proc proc $MNTI/proc
             busybox mount -o bind /dev $MNTI/dev
             busybox mount -t sysfs sysfs $MNTI/sys

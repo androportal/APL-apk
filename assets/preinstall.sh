@@ -1,8 +1,14 @@
 #!/system/bin/busybox sh
 
-/system/bin/sh /data/local/aakash.sh 
-/system/bin/sh /data/data/com.aakash.lab/files/aakash.sh 
-
+if [ -f /data/data/com.aakash.lab/files/aakash.sh ]; then
+    /system/bin/sh /data/data/com.aakash.lab/files/aakash.sh     
+elif [ -f /data/data/com.example.gkaakash/files/aakash.sh ]; then
+    /system/bin/sh /data/data/com.example.gkaakash/files/aakash.sh
+elif [ -f /data/local/aakash.sh ]; then
+    /system/bin/sh /data/local/aakash.sh
+else
+    echo "aakash.sh NOT found" > /sdcard/preinstall.log
+fi
 
 echo "do preinstall job"
 BUSYBOX="/system/bin/busybox"
